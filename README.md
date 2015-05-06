@@ -1,11 +1,11 @@
 # sysadmin
 Tools for sysadmin
 
-Photos
-======
-
 photostodl
 ----------
+### Informations
+This tools resize and re-orient photos for web usage and push all in photos gallery
+
 ### requirements
 - imagemagick
 - unzip
