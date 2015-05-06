@@ -8,6 +8,7 @@ This tools resize and re-orient photos for web usage and push all in photos gall
 
 ### requirements
 - imagemagick
+- file
 - unzip
 
 ### Installation
