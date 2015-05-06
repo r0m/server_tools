@@ -1,5 +1,5 @@
-# sysadmin
-Tools for sysadmin
+# server tools
+Tools for server
 
 photostodl
 ----------
