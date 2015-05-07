@@ -24,7 +24,7 @@ TGALBUMS=$TARGETDIR"/albums/"$ALBUMNAME
 TGDOWNLOAD=$TARGETDIR"/downloads"
 TMPDIR="/tmp/photosextract_"`date +%Y%m%d`
 # web server user (by default : www-data)
-WEBADMIN="webadmin"
+WEBADMIN="www-data"
 
 for UN in $TARGETDIR "$TARGETDIR/albums" $TGDOWNLOAD; do
     if [ ! -d "$UN" ]; then
@@ -43,21 +43,23 @@ mkdir -p $TMPDIR
 echo "Extract archive to $TGALBUMS..."
 $UNZIP $TGDOWNLOAD/$CNAME -d $TMPDIR
 
-# format photos for web server
-echo "Resize and Orient all pictures..."
-cd $TMPDIR
-for UN in `find . -iname "*.JPG" -o -iname "*.PNG" -o -iname "*.jpeg"`; do
-    echo -e "\tResize => "$UN
-    mogrify -resize 50x50% $UN $UN
-    echo -e "\tReorient => "$UN
-    convert -auto-orient $UN $UN
-done
-
 echo "Create album folder $TGALBUMS..."
 mkdir $TGALBUMS/
 
-echo "Move pictures to $TGALBUMS..."
-mv -f $TMPDIR/* $TGALBUMS/
+# format photos for web server
+echo "Resize, Orient, and move to album folder all pictures..."
+cd $TMPDIR
+for UN in `find . -iname "*.JPG" -o -iname "*.PNG" -o -iname "*.jpeg"`; do
+    echo -e "\tProcess => "$UN
+    mogrify -resize 50x50% $UN $UN
+    convert -auto-orient $UN $UN
+    mv $UN $TGALBUMS/
+done
+
+echo "Store md5sum of $CNAME in ${ALBUMNAME}.md5..."
+cd $TGDOWNLOAD
+md5sum $CNAME > ${ALBUMNAME}.md5
+cd -
 
 if [ $EUID -eq 0 ]; then
     echo "Change owner..."
