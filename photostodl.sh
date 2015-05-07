@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-UNZIP="/usr/bin/unzip"
 CFOLDER=$1
 
 if [ ! -f "$CFOLDER" ]; then
@@ -9,7 +8,7 @@ if [ ! -f "$CFOLDER" ]; then
     exit 1;
 fi
 # ToDo check if file is a zip archive
-CHECK_ZIP_FILE=`file -i "$CFOLDER" | grep -i "application/zip"`
+CHECK_ZIP_FILE=`file -i "$CFOLDER" | grep -Pi "application/[g]?zip"`
 if [ ! -n "$CHECK_ZIP_FILE" ]; then
     echo "File $CFOLDER isn't zip archive..."
     echo "End of $0..."
@@ -17,7 +16,7 @@ if [ ! -n "$CHECK_ZIP_FILE" ]; then
 fi
 
 CNAME=`basename $CFOLDER`
-ALBUMNAME=`echo $CNAME | sed 's/.zip//g'`
+ALBUMNAME=`echo $CNAME | sed -e 's/[.zip,.tar.gz]//g'`
 # folder where located your gallery photo
 TARGETDIR="/var/www/photos"
 TGALBUMS=$TARGETDIR"/albums/"$ALBUMNAME
@@ -41,7 +40,15 @@ echo "Create temporary directory..."
 mkdir -p $TMPDIR
 
 echo "Extract archive to $TGALBUMS..."
-$UNZIP $TGDOWNLOAD/$CNAME -d $TMPDIR
+case $CNAME in
+    *.zip)    unzip $TGDOWNLOAD/$CNAME -d $TMPDIR
+	      ;;
+    *.tar.gz) tar -C $TMPDIR -xzvf $TGDOWNLOAD/$CNAME
+	      ;;
+    *)        echo "Unknown format..."
+	      exit 0
+	      ;;
+esac
 
 echo "Create album folder $TGALBUMS..."
 mkdir $TGALBUMS/
