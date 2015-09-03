@@ -16,8 +16,26 @@ Put the script in root bin folder or server web user bin
 
 ### Usage
 ```
-photostodl.sh /path/to/archive/photos.zip
+$ photostodl.sh /path/to/archive/photos.zip
 ```
+
+backup_server.sh
+----------------
+### Informations
+This tools create an archive of your server
+
+### requirements
+- This script must be launch in root
+- mysqldump, tar, md5sum
+
+### Installation
+Put this script in root bin folder. replace folder1 folder2 file1 file2 by your data folder or file. In addition, create new cron job.
+
+### Usage
+```
+$ backup_server.sh
+```
+
 
 get_backup.sh
 -------------
@@ -34,7 +52,7 @@ Put this script in backup user bin and add exec permission (chmod + get_backup.s
 
 ### Usage
 ```
-get_backup.sh
+$ get_backup.sh
 ```
 
 check_archive.sh
@@ -51,5 +69,5 @@ Put this script in backup user bin and add exec permission. In addtion, create n
 
 ### Usage
 ```
-check_archive.sh
+$ check_archive.sh
 ```
