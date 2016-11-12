@@ -37,37 +37,24 @@ $ backup_server.sh
 ```
 
 
-get_backup.sh
+backup_mgr.sh
 -------------
 ### Informations
-This tools get backup archive from list of server and remove archive older than 10 days
+This tools get backup archive from list of server, create lts archive, remove old archive, and check integrity with md5sum.
 
 ### requirements
-- rsync, ssh
+- rsync, ssh, md5sum
 - generate ssh {private,public} key and push public on server to backup
 - pattern name of archive : ${SERVER_NAME}_backup_`date +%Y%m%d`.tar.gz
 
 ### Installation
-Put this script in backup user bin and add exec permission (chmod + get_backup.sh). In addition, create new cron job to get automatically archive.
+Put this script in backup user bin and add exec permission (chmod + get_backup.sh). First of all, create a new config file and update with your own informations
+```
+$ backup_mgr.sh --new-config
+```
+In addition, create new cron job to get automatically archive.
 
 ### Usage
 ```
-$ get_backup.sh
-```
-
-check_archive.sh
-----------------
-### Informations
-This tools check archive integrity
-
-### requirements
-- md5sum
-- md5sum.txt in all where there are archive. This file contain md5sum of each archive in 1 folder
-
-### Installation
-Put this script in backup user bin and add exec permission. In addtion, create new cron job to check automatically integrity archive.
-
-### Usage
-```
-$ check_archive.sh
+$ backup_mgr.sh
 ```
